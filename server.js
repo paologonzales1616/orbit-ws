@@ -67,6 +67,7 @@ io.on("connect", client => {
       newHistory.location = payload.location;
       newHistory.speed = payload.speed;
       newHistory.user_id = id;
+      newHistory.admin_id = admin_id;
       newHistory.save();
 
       io.to(`${session_id}`).emit("status", {
@@ -87,6 +88,7 @@ io.on("connect", client => {
       newNotification.location = payload.location;
       newNotification.speed = payload.speed;
       newNotification.user_id = id;
+      newNotification.admin_id = admin_id;
       newNotification.save();
 
       io.to(`${session_id}`).emit("status", {

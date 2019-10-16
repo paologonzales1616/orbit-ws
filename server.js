@@ -83,10 +83,7 @@ io.on("connect", client => {
       const session_id = getAdminSessionId(admin_id);
 
       const newNotification = new Notification();
-      newNotification.lat = payload.lat;
-      newNotification.lng = payload.lng;
-      newNotification.location = payload.location;
-      newNotification.speed = payload.speed;
+      newNotification.message = payload.message;
       newNotification.user_id = id;
       newNotification.admin_id = admin_id;
       newNotification.save();

@@ -19,6 +19,15 @@ io.on("connect", client => {
   // Check if client is already login
   // If admin return list logged users
   client.on("auth", userCreds => {
+
+    if (!userCreds.token) {
+      io.to(`${client.id}`).emit("auth", {
+        status: "fail",
+        message: "No token receive!"
+      });
+      io.sockets.connected[client.id].disconnect();
+    }
+
     if (!verifyToken(userCreds.token)) {
       io.to(`${client.id}`).emit("auth", {
         status: "fail",

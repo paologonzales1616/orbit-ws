@@ -66,15 +66,16 @@ io.on("connect", client => {
   });
 
   client.on("status", payload => {
+    const data = JSON.parse(payload);
     const { admin_id, id } = client.credentials;
     if (client.credentials) {
       const session_id = getAdminSessionId(admin_id);
 
       const newHistory = new History();
-      newHistory.lat = payload.lat;
-      newHistory.lng = payload.lng;
-      newHistory.location = payload.name;
-      newHistory.speed = payload.speed;
+      newHistory.lat = data.lat;
+      newHistory.lng = data.lng;
+      newHistory.location = data.name;
+      newHistory.speed = data.speed;
       newHistory.user_id = id;
       newHistory.admin_id = admin_id;
       newHistory.save();
@@ -82,10 +83,10 @@ io.on("connect", client => {
       io.to(`${session_id}`).emit("status", {
         id: id,
         data: {
-          lat: parseFloat(payload.lat),
-          lng: parseFloat(payload.lng),
-          speed: parseInt(payload.speed),
-          location: payload.name
+          lat: parseFloat(data.lat),
+          lng: parseFloat(data.lng),
+          speed: parseInt(data.speed),
+          location: data.name
         },
         metadata: {
           speed_unit: "m/s"
@@ -95,12 +96,13 @@ io.on("connect", client => {
   });
 
   client.on("notify", payload => {
+    const data = JSON.parse(payload);
     const { admin_id, id } = client.credentials;
     if (client.credentials) {
       const session_id = getAdminSessionId(admin_id);
 
       const newNotification = new Notification();
-      newNotification.message = payload.message;
+      newNotification.message = data.message;
       newNotification.user_id = id;
       newNotification.admin_id = admin_id;
       newNotification.save();
@@ -108,7 +110,7 @@ io.on("connect", client => {
       io.to(`${session_id}`).emit("status", {
         id: id,
         data: {
-          message: payload.message
+          message: data.message
         }
       });
     }

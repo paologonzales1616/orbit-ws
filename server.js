@@ -73,7 +73,7 @@ io.on("connect", client => {
       const newHistory = new History();
       newHistory.lat = payload.lat;
       newHistory.lng = payload.lng;
-      newHistory.location = payload.location;
+      newHistory.location = payload.name;
       newHistory.speed = payload.speed;
       newHistory.user_id = id;
       newHistory.admin_id = admin_id;
@@ -81,7 +81,15 @@ io.on("connect", client => {
 
       io.to(`${session_id}`).emit("status", {
         id: id,
-        data: payload
+        data: {
+          lat: parseFloat(payload.lat),
+          lng: parseFloat(payload.lng),
+          speed: parseInt(payload.speed),
+          location: payload.name
+        },
+        metadata: {
+          speed_unit: "m/s"
+        }
       });
     }
   });
@@ -99,7 +107,9 @@ io.on("connect", client => {
 
       io.to(`${session_id}`).emit("status", {
         id: id,
-        data: payload
+        data: {
+          message: payload.message
+        }
       });
     }
   });

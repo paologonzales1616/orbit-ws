@@ -67,7 +67,6 @@ io.on("connect", client => {
 
   client.on("status", payload => {
     const data = JSON.parse(payload);
-    console.log(payload);
     const { admin_id, id } = client.credentials;
     if (client.credentials) {
       const session_id = getAdminSessionId(admin_id);
